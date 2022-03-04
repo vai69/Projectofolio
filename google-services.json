@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "737555564753",
+    "project_id": "projectofolio-e4677",
+    "storage_bucket": "projectofolio-e4677.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737555564753:android:11a54aa90655da9528ddf0",
+        "android_client_info": {
+          "package_name": "com.projectofolio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "737555564753-u875eur5p3k6oj4tjub3taclc1plkvjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAtcBhmKARiHpWSi08J2bCu0Xftdi0kQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "737555564753-u875eur5p3k6oj4tjub3taclc1plkvjn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
