@@ -25,8 +25,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Colors from "../constants/Colors";
 import FilterScreen from '../screens/students/FilterScreen';
 import Logout from '../screens/Logout';
-import ChangePassword from '../screens/ChangePassword';
-
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -308,22 +306,6 @@ const LogoutNavigator = ()=>{
     )
 }
 
-const ChangePasswordNavigator = ()=>{
-    return(
-        <Stack.Navigator
-            screenOptions={config}
-        >
-            <Stack.Screen
-                name='ChangePassword'
-                component={ChangePassword}
-                options={{
-                    headerTitle : 'Change Password'
-                }}
-            />
-        </Stack.Navigator>
-    )
-}
-
 
 const ProDrawerNavigator = ()=>{
     return (
@@ -478,41 +460,13 @@ const ProDrawerNavigator = ()=>{
                 }
             }}
         />
-        <Drawer.Screen 
-            name='ChangePasswordNavigator' 
-            component={ChangePasswordNavigator}
-            options={{
-                drawerLabel : (metaData)=>{
-                    return (
-                    <View style={{flexDirection : 'row'}}>
-                        <View style={{marginRight : 10}}>
-                            <MaterialIcons 
-                                name="logout" 
-                                size={metaData.focused ? 20 : 15} 
-                                color={metaData.focused ? 'white' : '#888'} 
-                            />
-                        </View>
-                        
-                        <Text
-                            style={{
-                                color : metaData.focused ? 'white' : '#888',
-                                fontFamily : metaData.focused ? 'open-sans-bold' : 'open-sans'
-                            }}  
-                        >
-                           Change Password
-                        </Text>
-                    </View>
-                    )
-                }
-            }}
-        />
         
     </Drawer.Navigator>)
 }
 
 
 
-// const Navigator = ()=>{
+//const Navigator = ()=>{
 //     return(
 //     <Stack.Navigator
 //         screenOptions={{
