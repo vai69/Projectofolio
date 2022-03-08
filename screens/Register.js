@@ -58,8 +58,7 @@ export default function Register(props) {
                 Batch:batch,
                 LinkedIn:linkedin,
                 Github:github,
-                imgURL:imgLink,
-                role:'student'
+                imgURL:imgLink
             };
             const usersRef = firebase.firestore().collection('students')
             usersRef

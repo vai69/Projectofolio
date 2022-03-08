@@ -224,6 +224,22 @@ const LogoutNavigator = ()=>{
 }
 
 
+const ChangePasswordNavigator = ()=>{
+    return(
+        <Stack.Navigator
+            screenOptions={config}
+        >
+            <Stack.Screen
+                name='ChangePassword'
+                component={ChangePassword}
+                options={{
+                    headerTitle : 'Change Password'
+                }}
+            />
+        </Stack.Navigator>
+    )
+}
+
 const DrawerNavigator = ()=>{
     return (
     <Drawer.Navigator
@@ -371,6 +387,34 @@ const DrawerNavigator = ()=>{
                             }}  
                         >
                            Logout
+                        </Text>
+                    </View>
+                    )
+                }
+            }}
+        />
+        <Drawer.Screen 
+            name='ChangePasswordNavigator'
+            component={ChangePasswordNavigator}
+            options={{
+                drawerLabel : (metaData)=>{
+                    return (
+                    <View style={{flexDirection : 'row'}}>
+                        <View style={{marginRight : 10}}>
+                            <MaterialIcons 
+                                name="logout" 
+                                size={metaData.focused ? 20 : 15} 
+                                color={metaData.focused ? 'white' : '#888'} 
+                            />
+                        </View>
+                        
+                        <Text
+                            style={{
+                                color : metaData.focused ? 'white' : '#888',
+                                fontFamily : metaData.focused ? 'open-sans-bold' : 'open-sans'
+                            }}  
+                        >
+                           Change Password
                         </Text>
                     </View>
                     )
