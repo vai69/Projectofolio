@@ -5,8 +5,6 @@ import { firebase } from '../firebase/config'
 import {useSelector,useDispatch} from 'react-redux';
 import { setID} from '../Redux/actions';
 
-
-
 export default function Login(props) {
 
   const {id} =useSelector(state => state.userReducer);
@@ -33,7 +31,12 @@ export default function Login(props) {
                         return;
                     }
                     const user = firestoreDocument.data()
+                    if(user.role=="student"){
                     props.navigation.navigate('DrawerNavigator')
+                    }
+                    else{
+                      props.navigation.navigate('ProDrawerNavigator')
+                    }
                 })
                 .catch(error => {
                     alert(error)

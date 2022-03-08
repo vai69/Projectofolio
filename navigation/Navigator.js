@@ -25,6 +25,8 @@ import { Store } from '../Redux/store';
 import Colors from "../constants/Colors";
 import FilterScreen from '../screens/students/FilterScreen';
 import Logout from '../screens/Logout';
+import ProDrawerNavigator  from './ProfessorNavigator';
+
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -401,6 +403,10 @@ const Navigator = ()=>{
             <Stack.Screen
                 name='DrawerNavigator'
                 component={DrawerNavigator}
+            />
+            <Stack.Screen
+                name='ProDrawerNavigator'
+                component={ProDrawerNavigator}
             />
         </Stack.Navigator>
     </Provider>

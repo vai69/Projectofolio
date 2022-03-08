@@ -307,7 +307,7 @@ const LogoutNavigator = ()=>{
 }
 
 
-const DrawerNavigator = ()=>{
+const ProDrawerNavigator = ()=>{
     return (
     <Drawer.Navigator
         initialRouteName='ProjectTabNavigator'
@@ -466,28 +466,28 @@ const DrawerNavigator = ()=>{
 
 
 
-const Navigator = ()=>{
-    return(
-    <Stack.Navigator
-        screenOptions={{
-            headerShown : false
-        }}
-        initialRouteName='Login'
-    >
-        <Stack.Screen
-            name='Login'
-            component={Login}
-        />
-        <Stack.Screen
-            name='Register'
-            component={Register}
-        />
-        <Stack.Screen
-            name='DrawerNavigator'
-            component={DrawerNavigator}
-        />
-    </Stack.Navigator>
-    )
-}
+// const Navigator = ()=>{
+//     return(
+//     <Stack.Navigator
+//         screenOptions={{
+//             headerShown : false
+//         }}
+//         initialRouteName='Login'
+//     >
+//         <Stack.Screen
+//             name='Login'
+//             component={Login}
+//         />
+//         <Stack.Screen
+//             name='Register'
+//             component={Register}
+//         />
+//         <Stack.Screen
+//             name='DrawerNavigator'
+//             component={DrawerNavigator}
+//         />
+//     </Stack.Navigator>
+//     )
+// }
 
-export default Navigator
+export default ProDrawerNavigator;
