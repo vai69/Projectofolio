@@ -1,10 +1,10 @@
-export const SET_USER_ID ='SET_USER_ID';
+export const SET_USER='SET_USER';
 
 
 
-export const setID = id =>dispatch =>{
+export const setUser = id =>dispatch =>{
 	dispatch({
-		type: SET_USER_ID,
+		type: SET_USER,
 		payload:id,
 	})
 };

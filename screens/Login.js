@@ -3,11 +3,11 @@ import { Text, View ,TextInput ,StyleSheet,TouchableOpacity ,Image} from 'react-
 import Colors from '../constants/Colors'
 import { firebase } from '../firebase/config'
 import {useSelector,useDispatch} from 'react-redux';
-import { setID} from '../Redux/actions';
+import { setUser} from '../Redux/actions';
 
 export default function Login(props) {
 
-  const {id} =useSelector(state => state.userReducer);
+  const {user} =useSelector(state => state.userReducer);
   const [email , setEmail] = useState('');
   const [pass,setPass] = useState('');
   const dispatch =useDispatch();
@@ -19,8 +19,6 @@ export default function Login(props) {
         .signInWithEmailAndPassword(email.trim(), pass)
         .then((response) => {
           const uid=response.user.uid;
-            dispatch(setID(uid));
-            console.log("id: ",id);
             const usersRef = firebase.firestore().collection('students')
             usersRef
                 .doc(uid)
@@ -30,8 +28,10 @@ export default function Login(props) {
                         alert("User does not exist anymore.")
                         return;
                     }
-                    const user = firestoreDocument.data()
-                    if(user.role=="student"){
+                    const us = firestoreDocument.data();
+                    console.log(us);
+                    dispatch(setUser(us));
+                    if(us.role=="student"){
                     props.navigation.navigate('DrawerNavigator')
                     }
                     else{

@@ -1,14 +1,14 @@
-import {SET_USER_ID} from './actions';
+import {SET_USER} from './actions';
 
 const initialState ={
-	id : '',
+	user : {},
 }
 
 
 function userReducer(state =initialState, action){
 	switch(action.type){
-		case SET_USER_ID:
-			return {...state, id:action.payload};
+		case SET_USER:
+			return {...state, user:action.payload};
 		default:
 			return state;
 	}

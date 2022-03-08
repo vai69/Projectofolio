@@ -13,8 +13,8 @@ import {useSelector,useDispatch} from 'react-redux';
 
 
 export default function ProjectListScreen(props) {
-     const {id} =useSelector(state => state.userReducer);
-     console.log(id);
+     const {user} =useSelector(state => state.userReducer);
+     console.log(user);
     useEffect(() => {
               
         props.navigation.setOptions({
