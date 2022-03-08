@@ -5,6 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { firebase } from '../../firebase/config'
 
 import { Text ,
     View  ,
@@ -47,9 +48,41 @@ export default function AddProjectScreen(props) {
                       size={24} 
                       style={{marginRight : 10}}
                       color="white" 
-                      onPress={()=>{  
-                          //Logic to save filters
-                          props.navigation.navigate('ProjectTabNavigator');
+                      onPress={async()=>{  
+                          
+                            
+                                const docRef = firebase.firestore().collection('Projects').doc();
+                                
+                                    const uid = docRef.id;
+                                    console.log(uid);
+                                    const response = await fetch(image);;
+                                    var ref = firebase.storage().ref().child(uid);
+                                    await ref.put(image);
+                                    const url = await ref.getDownloadURL().catch((error) => { console.log( error )});
+                                    setImageLink(url);
+                                    console.log("url: "+url);
+                                    const data = {
+                                        id:uid,
+                                        Title: title,
+                                        Description:description,
+                                        Guide:guide,
+                                        Github:github,
+                                        imgURL:imgLink,
+                                        Host:host,
+                                        Contributor:contributor,
+                                        TechStack:tech
+                                    };
+                                    const usersRef = firebase.firestore().collection('Projects')
+                                    usersRef
+                                        .doc(uid)
+                                        .set(data)
+                                        .then(() => {
+                                            props.navigation.navigate('ProjectTabNavigator')
+                                        })
+                                        .catch((error) => {
+                                            alert(error)
+                                        });
+                                
                       }}
                   />
               )
@@ -87,6 +120,7 @@ export default function AddProjectScreen(props) {
 
     const [image , setImage] = useState(null);
     const [title,setTitle] = useState('');
+    const [imgLink,setImageLink] = useState('');
     const [description,setDescription] = useState('');
     const [github,setGithub] = useState('');
     const [guide,setGuide] = useState('');
