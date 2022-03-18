@@ -55,12 +55,23 @@ export default function AddProjectScreen(props) {
                                 
                                     const uid = docRef.id;
                                     console.log(uid);
-                                    const response = await fetch(image);;
-                                    var ref = firebase.storage().ref().child(uid);
+                                    // // const response = await fetch(image);;
+                                    // // var ref = firebase.storage().ref().child(uid);
+                                    // // await ref.put(image);
+                                    // // const url = await ref.getDownloadURL().catch((error) => { console.log( error )});
+                                    const response = await fetch(image);
+                                    //console.log(JSON.stringify(response));
+                                    var ref = firebase.storage().ref().child(title);
                                     await ref.put(image);
                                     const url = await ref.getDownloadURL().catch((error) => { console.log( error )});
                                     setImageLink(url);
-                                    console.log("url: "+url);
+
+
+                                    // await firebase.storage().ref().child(uid).getDownloadURL().then((url)=>{
+                                    //     console.log("url: "+url);
+                                    //     setImageLink(url);
+                                    // });
+                                    
                                     const data = {
                                         id:uid,
                                         Title: title,
