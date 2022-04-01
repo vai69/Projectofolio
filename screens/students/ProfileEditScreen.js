@@ -4,14 +4,22 @@ import { Picker } from '@react-native-picker/picker';
 
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
+import {firebase} from '../../firebase/config';
 
 import { Text ,View  ,StyleSheet , Button, TouchableNativeFeedback, TextInput} from 'react-native'
 import Colors from '../../constants/Colors';
 
 
+import { FlipInYRight } from 'react-native-reanimated';
+
+
 
 
 export default function ProfileEditScreen(props) {
+    const {user} = useSelector(state => state.userReducer)
+
+
     props.navigation.setOptions({
         
         headerRight : ()=>{
@@ -23,7 +31,17 @@ export default function ProfileEditScreen(props) {
                     color="white" 
                     onPress={()=>{  
                         //Logic to Edit Profile
+                        const res = firebase.firestore().collection('students').doc(user.id).update({
+                            github : github,
+                            linkedin : linkedin,
+                        });
+                        if(res){
+                            console.log(res);
                         props.navigation.navigate('ProfileScreen');
+                        }
+                        else{ 
+                            Alert.alert('Error','Something went wrong');
+                        }
                     }}
                 />
             )

@@ -1,9 +1,10 @@
 import React , {useState} from 'react'
 import { Text, View ,TextInput ,StyleSheet,TouchableOpacity ,Image} from 'react-native'
 import Colors from '../constants/Colors'
+import {useEffect} from 'react'
 import { firebase } from '../firebase/config'
 import {useSelector,useDispatch} from 'react-redux';
-import { setUser} from '../Redux/actions';
+import { setUser, setProjects} from '../Redux/actions';
 
 export default function Login(props) {
 
@@ -11,6 +12,10 @@ export default function Login(props) {
   const [email , setEmail] = useState('');
   const [pass,setPass] = useState('');
   const dispatch =useDispatch();
+
+  useEffect(() => {
+    dispatch(setProjects());
+  }, []);
 
   const onPressLogin = () => {
     console.log(email)
@@ -31,6 +36,8 @@ export default function Login(props) {
                     const us = firestoreDocument.data();
                     console.log(us);
                     dispatch(setUser(us));
+                    
+
                     if(us.role=="student"){
                     props.navigation.navigate('DrawerNavigator')
                     }

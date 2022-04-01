@@ -5,14 +5,15 @@ import { StyleSheet, Text, View,Image, ScrollView, TouchableNativeFeedback , Lin
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-
+import {useSelector} from 'react-redux';
 
 import { Feather } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 
 export default function ProfileScreen(props) {
     
-
+    const {user} = useSelector(state => state.userReducer);
+    console.log(user);
     const handlePress = useCallback(async (url) => {
         if (url != undefined) {
           await Linking.openURL(url);
