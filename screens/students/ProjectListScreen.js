@@ -20,13 +20,13 @@ import { useSelector, useDispatch } from 'react-redux';
 export default function ProjectListScreen(props) {
     // const { user } = useSelector(state => state.userReducer);
     // console.log(user);
-    const {projects} = useSelector(state => state.userReducer);
-    console.log(projects);
+    const {filters} = useSelector(state => state.userReducer);
+    console.log(filters);
     const dispatch = useDispatch();
 
     // useEffect(() => {
     //     firebase.firestore()
-    //         .collection('Projects')
+    //         .collection('filters')
     //         .get()
     //         .then(querySnapshot => {
     //             console.log('Total users: ', querySnapshot.size);
@@ -37,15 +37,15 @@ export default function ProjectListScreen(props) {
     //                 setProject(prevState => [...prevState, dt]);
     //             });
     //         })
-    //         dispatch(setProjects(pro));
-    //         console.log("Projects: ", dispatch(returnProjects()));
+    //         dispatch(setfilters(pro));
+    //         console.log("filters: ", dispatch(returnfilters()));
     //         // console.log(pro);
     // }, []);
   
-    // let projects = useSelector(state=> state.projects);
-    // setProject(projects);
+    // let filters = useSelector(state=> state.filters);
+    // setProject(filters);
 
-    const list = projects.map((item,key)=> {
+    const list = filters.map((item,key)=> {
         console.log(item.imgURL);
         return (
             <TouchableNativeFeedback key={key}
@@ -62,8 +62,9 @@ export default function ProjectListScreen(props) {
                 </View>
                 <View style={styles.techContainer}>
                 {
+                    // console.log(item.TechStack)
                     item.TechStack.map(tech => {
-                                // console.log(tech);
+                                console.log(tech);
                             return(<TechItem tech={tech} />);
                     })
                 }

@@ -1,10 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, TouchableNativeFeedback } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableNativeFeedback, ScrollView } from 'react-native'
 
 import TechItem from '../../components/TechItem'
 
 import Colors from '../../constants/Colors'
-
+import {useSelector} from 'react-redux';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -108,7 +108,9 @@ export default function ProjectQueueScreen(props) {
         //     </View>
         // </TouchableNativeFeedback>
         <ScrollView>
-            {list}
+            {list.length === 0 ? <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>No Project</Text>
+            </View> : list}
         </ScrollView>
 
     )

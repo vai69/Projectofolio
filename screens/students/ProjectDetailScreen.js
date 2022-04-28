@@ -45,9 +45,10 @@ export default function ProjectDetailScreen(props) {
             <TechItem tech='Mongodb' />
             <TechItem tech='Javascript' /> */}
             {
+              details.Tech.length > 0 ?
               details.TechStack.map(tech => (
                 <TechItem tech={tech} />
-              ))
+              )) : null
             }
           </View>
           <View style={styles.buttonContainer}>

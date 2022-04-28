@@ -17,6 +17,9 @@ import Register from '../screens/Register';
 import ProjectQueueScreen from '../screens/professor/ProjectQueueScreen';
 import ProjectDetailScreenProfessor from '../screens/professor/ProjectDetailScreenProfessor';
 import ApprovedProjectList from '../screens/professor/ApprovedProjectList'
+import Changepassword from '../screens/ChangePassword'
+
+
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
@@ -305,6 +308,21 @@ const LogoutNavigator = ()=>{
     </Stack.Navigator>
     )
 }
+const ChangePasswordNavigator = ()=>{
+    return(
+        <Stack.Navigator
+            screenOptions={config}
+        >
+            <Stack.Screen
+                name='ChangePassword'
+                component={Changepassword}
+                options={{
+                    headerTitle : 'Change Password'
+                }}
+            />
+        </Stack.Navigator>
+    )
+}
 
 
 const ProDrawerNavigator = ()=>{
@@ -454,6 +472,34 @@ const ProDrawerNavigator = ()=>{
                             }}  
                         >
                            Logout
+                        </Text>
+                    </View>
+                    )
+                }
+            }}
+        />
+        <Drawer.Screen 
+            name='ChangePasswordNavigator'
+            component={ChangePasswordNavigator}
+            options={{
+                drawerLabel : (metaData)=>{
+                    return (
+                    <View style={{flexDirection : 'row'}}>
+                        <View style={{marginRight : 10}}>
+                            <MaterialIcons 
+                                name="logout" 
+                                size={metaData.focused ? 20 : 15} 
+                                color={metaData.focused ? 'white' : '#888'} 
+                            />
+                        </View>
+                        
+                        <Text
+                            style={{
+                                color : metaData.focused ? 'white' : '#888',
+                                fontFamily : metaData.focused ? 'open-sans-bold' : 'open-sans'
+                            }}  
+                        >
+                           Change Password
                         </Text>
                     </View>
                     )

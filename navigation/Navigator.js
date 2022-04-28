@@ -14,6 +14,7 @@ import ProfileEditScreen from '../screens/students/ProfileEditScreen'
 import AddProjectScreen from '../screens/students/AddProjectScreen'
 import Login from '../screens/Login';
 import Register from '../screens/Register';
+import Changepassword from '../screens/ChangePassword'
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
@@ -231,7 +232,7 @@ const ChangePasswordNavigator = ()=>{
         >
             <Stack.Screen
                 name='ChangePassword'
-                component={ChangePassword}
+                component={Changepassword}
                 options={{
                     headerTitle : 'Change Password'
                 }}

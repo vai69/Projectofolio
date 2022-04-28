@@ -27,18 +27,19 @@ export default function ProjectQueueScreen(props) {
         return (
             <TouchableNativeFeedback key={key}
                 onPress={() => {
-                    props.navigation.navigate('ProjectDetailScreenProfessor');
+                    props.navigation.navigate('ProjectDetailScreenProfessor', { project: item });
                 }}
             >
                 <View style={styles.container}>
                     <View>
-                        <Image style={styles.image} source={{ uri: 'https://d2slcw3kip6qmk.cloudfront.net/marketing/blog/2017Q2/project-planning-header@2x.png' }} />
+                        <Image style={styles.image} source={item.imgURL} />
                     </View>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{item.Title}</Text>
                     </View>
                     <View style={styles.techContainer}>
                         {
+                            // console.log(item.TechStack)
                             item.TechStack.map(tech => {
                                 // console.log(tech);
                                 return (<TechItem tech={tech} />);
@@ -51,12 +52,29 @@ export default function ProjectQueueScreen(props) {
                                 name="check"
                                 size={30}
                                 color={Colors.primary}
-                                onPress={() => { 
-                                    firebase.firestore().collection('Projects').doc(Queuse[key].id).update({
-                                        status: true,
-                                        rejected : false,
-                                    })
-                                    props.navigation.navigate('ApprovedProjectList');
+                                onPress={() => {
+                                    const fr = firebase.firestore().collection('projects').doc(item.id).get();
+                                    console.log(fr);
+                                    // firebase.firestore().collection('Projects').doc(Queuse.id).set({
+                                    //     Title: item.TSSitle,
+                                    //     Description:item.Description,
+                                    //     Guide: item.Guide,
+                                    //     Github: item.Github,
+                                    //     imgURL: item.imgURL,
+                                    //     Host: item.Host,
+                                    //     Contributor: item.Contributor,
+                                    //     status: false,
+                                    //     rejected: false,
+                                    //     TechStack: item.Techstack,
+                                    //     Domain: item.Domain,
+                                    //     batch: user.batch
+                                    // }, { merge: true }).then(() => {
+                                    //     console.log("success");
+                                    // }).catch(err => {
+                                    //     console.log(err);
+                                    // })
+                                    console.log(Queuse.status);
+                                    // props.navigation.navigate('ApprovedProjectList');
                                 }}
                             />
                         </View>
@@ -65,7 +83,14 @@ export default function ProjectQueueScreen(props) {
                                 name="minus"
                                 size={30}
                                 color={Colors.primary}
-                                onPress={() => { }}
+                                // onPress={() => { }}
+                                onPress={() => {
+                                    firebase.firestore().collection('Projects').doc(Queuse.id).update({
+                                        status: false,
+                                        rejected: true
+                                    });
+                                    console.log(Queuse.status);
+                                }}
                             />
                         </View>
 

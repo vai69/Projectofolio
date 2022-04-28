@@ -14,6 +14,28 @@ export default function ProfileScreen(props) {
     
     const {user} = useSelector(state => state.userReducer);
     console.log(user);
+    const { projects } = useSelector(state => state.userReducer)
+    const project = projects.filter(project => project.Contributor.includes(user.Email) && project.status === true);
+
+    const proList = project.map((item, key)=>{return(
+      <TouchableNativeFeedback key={key}
+      onPress={()=>{props.navigation.navigate('ProjectDetail',{project:item})}}
+    >
+        <View style={styles.projectContainer}>
+          <Image 
+              style={styles.projectImage} 
+              source={{uri : 'https://hindi.cdn.zeenews.com/hindi/sites/default/files/2022/02/16/1049974-rohit-sharma.gif'}} 
+          />
+          <View >
+            <Text style={styles.projectTitle} >{item.Title}</Text>
+          </View>
+        </View>
+    </TouchableNativeFeedback>
+    )})
+
+
+
+
     const handlePress = useCallback(async (url) => {
         if (url != undefined) {
           await Linking.openURL(url);
@@ -86,10 +108,10 @@ export default function ProfileScreen(props) {
       <View style={styles.snd}>
         {/* Name Batch */}
         <View style={styles.nameContainer}>
-          <Text style={styles.name} >Pavan</Text> 
-          <Text style={styles.surName}>Shinde</Text>
+          <Text style={styles.name} >{user.Fname}</Text> 
+          <Text style={styles.surName}>{user.Lname}</Text> 
         </View>
-        <Text style={styles.surName}>2023</Text>
+        <Text style={styles.surName}>{user.Batch}</Text>
       </View>
 
 
@@ -103,7 +125,7 @@ export default function ProfileScreen(props) {
               name="email" 
               size={40} 
               color={Colors.accent} 
-              onPress={handlePress.bind(this,'mailto:pavan.shinde@walchandsangli.ac.in')}
+              onPress={handlePress.bind(this,`mailto:${user.Email}`)}
             />
             <Entypo 
               name="mobile" 
@@ -120,7 +142,7 @@ export default function ProfileScreen(props) {
           style={{flexDirection : 'row'}}
           horizontal={true}
         >
-          <TouchableNativeFeedback 
+          {/* <TouchableNativeFeedback 
             onPress={()=>{props.navigation.navigate('ProjectDetail')}}
           >
               <View style={styles.projectContainer}>
@@ -132,7 +154,10 @@ export default function ProfileScreen(props) {
                   <Text style={styles.projectTitle} >Project 1</Text>
                 </View>
               </View>
-          </TouchableNativeFeedback>
+          </TouchableNativeFeedback> */}
+          {
+            proList
+          }
           
             
         </ScrollView>

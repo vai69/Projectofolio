@@ -2,7 +2,7 @@ import { firebase } from '../firebase/config'
 
 export const SET_USER = 'SET_USER';
 export const SET_PROJECTS = 'SET_PROJECTS';
-
+export const FIL_PROJECTS = 'FIL_PROJECTS';
 
 export const setUser = id => dispatch => {
 	dispatch({
@@ -26,7 +26,16 @@ export const setProjects = () => {
 					loadedProducts.push(dt);
 				});
 			})
+		const fil = loadedProducts.filter(item => { return item.status === true });
 			dispatch({type : SET_PROJECTS, payload : loadedProducts});
+			dispatch({type : FIL_PROJECTS, payload : fil});
 	}
 	
 }
+
+export const fil_pro = (items) =>{
+	return async dispatch=>{
+		dispatch({type : FIL_PROJECTS, payload :items})
+	}
+}
+

@@ -7,11 +7,14 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { Text ,View  ,StyleSheet , Button, TouchableNativeFeedback} from 'react-native'
 import Colors from '../../constants/Colors';
-
+import {useSelector, useDispatch} from 'react-redux';
+import {fil_pro, setProjects} from '../../Redux/actions';
 
 
 
 export default function FilterScreen(props) {
+    const {projects, filters} = useSelector(state => state.userReducer);
+    const dispatch = useDispatch();
     props.navigation.setOptions({
         headerLeft : ()=>{
             return (
@@ -35,7 +38,8 @@ export default function FilterScreen(props) {
                     color="white" 
                     onPress={()=>{  
                         //Logic to save filters
-                        props.navigation.navigate('ProjectTabNavigator');
+                        apply();
+                        // props.navigation.navigate('ProjectTabNavigator');
                     }}
                 />
             )
@@ -43,11 +47,51 @@ export default function FilterScreen(props) {
     });
 
 
-    const [batch,setBatch] = useState('All');
-    const [yrOfStudy,setYrOfStudy] = useState('All');
-    const [guide,setGuide] = useState('All');
-    const [domain,setDomain] = useState('All');
+    const [batch,setBatch] = useState('');
+    const [yrOfStudy,setYrOfStudy] = useState('');
+    const [guide,setGuide] = useState('');
+    const [domain,setDomain] = useState('');
 
+
+    const apply=()=>{
+        if(batch === '' && guide === '' && domain === ''){
+            dispatch(setProjects())
+            props.navigation.navigate('ProjectTabNavigator');
+        }
+        else if(batch && guide && domain){
+            const fl = projects.filter(p=>{
+                return p.batch === batch && p.guide === guide && p.domain === domain;
+            })
+            console.log(fl);
+        }
+        else if(batch && guide)
+        {
+            const fl = projects.filter(p=>{
+                return p.batch === batch && p.guide === guide;
+            })
+            console.log(fl);
+        }
+        else if(batch)
+        {
+            const fl = projects.filter(p=>{
+                return p.batch === batch;
+            })
+            console.log(fl);
+        }
+        else if(guide){
+            const fl = projects.filter(p=>{
+                return p.guide === guide;
+            })
+            console.log(fl);
+        }
+        else if(domain){
+            const fl = projects.filter(p=>{
+                return p.Domain === domain;
+            })
+            console.log(fl);
+            dispatch(fil_pro(fl));
+        }
+    }
     
     return (
         <View>
@@ -73,7 +117,7 @@ export default function FilterScreen(props) {
             </View>        
 
 
-            <View style={styles.container}> 
+            {/* <View style={styles.container}> 
                 <View style={styles.title}>
                     <Text style={styles.titleContent} >Year Of Study</Text>
                 </View>
@@ -92,7 +136,7 @@ export default function FilterScreen(props) {
                     <Picker.Item label='B.Tech' value='B.Tech'/>
 
                 </Picker>
-            </View>
+            </View> */}
 
 
             <View style={styles.container}> 
@@ -107,19 +151,19 @@ export default function FilterScreen(props) {
                         
                     }}
                 >
-                    <Picker.Item label='All' value='All'/>
-                    <Picker.Item label='Dr. M. A. Shah (HOD)' value='Dr. M. A. Shah (HOD)'/>
-                    <Picker.Item label='Dr. B. F. Momin' value='Dr. B. F. Momin'/>
-                    <Picker.Item label='Mr. A.  R. Surve' value='Mr. A.  R. Surve'/>
-                    <Picker.Item label='Dr. N. L. Gavankar' value='Dr. N. L. Gavankar'/>
-                    <Picker.Item label='Ms. N. L. Mudegol' value='Ms. N. L. Mudegol'/>
-                    <Picker.Item label='Mr. K. P. Kamble' value='Mr. K. P. Kamble'/>
-                    <Picker.Item label='Mr. S. S. Sontakke' value='Mr. S. S. Sontakke'/>
-                    <Picker.Item label='Ms. P. D. Mundada' value='Ms. P. D. Mundada'/>
-                    <Picker.Item label='Ms. A. S. Pawar' value='Ms. A. S. Pawar'/>
-                    <Picker.Item label='Mr. S. D. Pujari' value='Mr. S. D. Pujari'/>
-                    <Picker.Item label='Miss.S. S. Rokade' value='Miss.S. S. Rokade'/>
-                    <Picker.Item label='Mr. A. A. Urunkar' value='Mr. A. A. Urunkar'/>
+                    <Picker.Item label='All' value=''/>
+                    <Picker.Item label='Dr.M.A.Shah(HOD)' value='Dr.M.A.Shah' />
+                    <Picker.Item label='Dr.B.F.Momin' value='Dr.B.F.Momin' />
+                    <Picker.Item label='Mr.A.R.Surve' value='Mr.A.R.Surve' />
+                    <Picker.Item label='Dr.N.L.Gavankar' value='Dr.N.L.Gavankar' />
+                    <Picker.Item label='Ms.N.L.Mudegol' value='Ms.N.L.Mudegol' />
+                    <Picker.Item label='Mr.K.P.Kamble' value='Mr.K.P.Kamble' />
+                    <Picker.Item label='Mr.S.S.Sontakke' value='Mr.S.S.Sontakke' />
+                    <Picker.Item label='Ms.P.D.Mundada' value='Ms.P.D.Mundada' />
+                    <Picker.Item label='Ms.A.S.Pawar' value='Ms.A.S.Pawar' />
+                    <Picker.Item label='Mr.S.D.Pujari' value='Mr.S.D.Pujari' />
+                    <Picker.Item label='Miss.S.S.Rokade' value='Miss.S.S.Rokade' />
+                    <Picker.Item label='Mr.A.A.Urunkar' value='Mr.A.A.Urunkar' />
 
                 </Picker>
             </View>
@@ -151,11 +195,12 @@ export default function FilterScreen(props) {
             <View style={styles.buttonContainer}>
                 <TouchableNativeFeedback 
                     onPress={()=>{
-                        setBatch('All');
-                        setDomain('All');
-                        setGuide('All'),
-                        setYrOfStudy('All');
-                        props.navigation.navigate('ProjectTabNavigator');
+                        setBatch('');
+                        setDomain('');
+                        setGuide(''),
+                        setYrOfStudy('');
+                        dispatch(setProjects())
+                        // props.navigation.navigate('ProjectTabNavigator');
                     }}
                 >
                     <Text

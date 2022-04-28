@@ -2,40 +2,65 @@ import React, { useState, useEffect } from 'react'
 import { Text, View, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import Colors from '../constants/Colors'
 import { Feather } from '@expo/vector-icons';
+import { firebase } from '../firebase/config'
+import { useSelector } from 'react-redux';
+
+
+
 export default function Login(props) {
     // const [email, setEmail] = useState('');
+    const { user } = useSelector(state => state.userReducer)
 
     useEffect(() => {
         props.navigation.setOptions({
-            headerLeft : ()=>{
+            headerLeft: () => {
                 return (
-                    <Feather 
-                        name="menu" 
-                        size={24} 
-                        color="white" 
-                        style={{marginLeft : 10}}
-                        onPress={()=>{
+                    <Feather
+                        name="menu"
+                        size={24}
+                        color="white"
+                        style={{ marginLeft: 10 }}
+                        onPress={() => {
                             props.navigation.toggleDrawer();
                         }}
                     />
                 )
             },
-    })}, [])
+        })
+    }, [])
     const [oldPass, setOldPass] = useState('');
     const [pass1, setNewPass1] = useState('');
     const [pass2, setNewPass2] = useState('');
 
-    HandlesetNewPass2 = (text) => {
-        if(pass1 != pass2) {
-            Alert.alert("Passwords do not match")
+    const HandlesetNewPass2 = (text) => {
+        if (pass1 != pass2) {
+            // console.log(text);
+            // Alert.alert("Passwords do not match")
         }
         else {
             setNewPass2(text)
         }
     }
-    onPressLogin = () => {
-        Alert.alert("Password Changed");
-        props.navigation.navigate('ProfDrawerNavigator')
+    const onPressLogin = () => {
+        // let emailCred = firebase.auth.EmailAuthProvider.credential(
+        //     firebase.auth().currentUser, oldPass);
+        // firebase.auth().currentUser.reauthenticateWithCredential(emailCred)
+        //     .then(() => {
+        //         // User successfully reauthenticated.
+        //         firebase.auth().currentUser.updatePassword(pass1);
+        //         console.log("Updated password successfully")
+        //     })
+        //     .catch(error => {
+        //         // Handle error.
+        //         console.log(error);
+        //     });
+        try{
+            firebase.auth().currentUser.updatePassword(pass1);
+            console.log("Updated password successfully")
+        }catch(error)
+        {
+            console.log(error);
+        }
     }
     return (
         <View style={styles.container}>

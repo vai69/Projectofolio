@@ -15,19 +15,26 @@ import {
     TouchableNativeFeedback,
     TextInput,
     ScrollView,
-    Image
+    Image,
+    TouchableOpacity
 } from 'react-native'
+// import * as  ImagePicker from 'react-native-image-picker';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
 import Colors from '../../constants/Colors';
-import { set } from 'react-native-reanimated';
+import { add, set } from 'react-native-reanimated';
+import { TouchableHighlight } from 'react-native-web';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser, setProjects} from '../../Redux/actions';
 
 
 
 
 export default function AddProjectScreen(props) {
+    const {user} = useSelector(state => state.userReducer)
+
     const [image, setImage] = useState(null);
     const [title, setTitle] = useState('');
     const [imgLink, setImageLink] = useState('');
@@ -35,25 +42,18 @@ export default function AddProjectScreen(props) {
     const [github, setGithub] = useState('');
     const [guide, setGuide] = useState('');
     const [host, setHost] = useState('');
-
+    const [domain, setDomain] = useState('');
     const [contributor, setContributor] = useState([]);
     const [lenContributor, setLenContributor] = useState(0);
 
     const [tech, setTech] = useState([]);
     const [lenTech, setLenTech] = useState(0);
+    
 
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        // setImage(null);
-        // setTitle('');
-        // setDescription('');
-        // setGithub('');
-        // setGuide('');
-        // setHost('');
-        // setContributor('');
-        // setLenContributor('');
-        // setTech('');
-        // setLenTech('');
+
         props.navigation.setOptions({
             headerLeft: () => {
                 return (
@@ -75,50 +75,98 @@ export default function AddProjectScreen(props) {
                         size={24}
                         style={{ marginRight: 10 }}
                         color="white"
-                        onPress={async () => {
+                        // onPress={async () => {
 
 
-                            const docRef = firebase.firestore().collection('Projects').doc();
+                        //     const docRef = firebase.firestore().collection('Projects').doc();
 
-                            const uid = docRef.id;
-                            // console.log(uid);
-                            const response = await fetch(image);
-                            // console.log(JSON.stringify(response));
-                            var ref = firebase.storage().ref().child(title);
-                            await ref.put(image);
-                            const url = await ref.getDownloadURL().catch((error) => { console.log(error) });
-                            console.log(url);
-                            // setImageLink(url);
-                            const data = {
-                                Title: title,
-                                Description: description,
-                                Guide: guide,
-                                Github: github,
-                                imgURL: url,
-                                Host: host,
-                                Contributor: contributor,
-                                status: false,
-                                rejected : false,
-                                TechStack: tech
-                            };
-                            console.log(data);
-                            const usersRef = firebase.firestore().collection('Projects')
-                            usersRef
-                                .doc(uid)
-                                .set(data)
-                                .then(() => {
-                                    props.navigation.navigate('ProjectTabNavigator')
-                                })
-                                .catch((error) => {
-                                    alert(error)
-                                });
+                        //     const uid = docRef.id;
+                        //     // console.log(uid);
+                        //     const response = await fetch(image);
+                        //     // console.log(JSON.stringify(response));
+                        //     const blob = response.blob();
+                        //     var ref = firebase.storage().ref().child(title);
+                        //     await ref.put("images/" + image);
+                        //     const url = await ref.getDownloadURL().catch((error) => { console.log(error) });
+                        //     console.log(url);
+                        //     // setImageLink(url);
+                        //     const data = {
+                        //         Title: title,
+                        //         Description: description,
+                        //         Guide: guide,
+                        //         Github: github,
+                        //         imgURL: url,
+                        //         Host: host,
+                        //         Contributor: contributor,
+                        //         status: false,
+                        //         rejected: false,
+                        //         TechStack: tech,
+                        //         Domain: domain
+                        //     };
+                        //     console.log(data);
+                        //     const usersRef = firebase.firestore().collection('Projects')
+                        //     usersRef
+                        //         .doc(uid)
+                        //         .set(data)
+                        //         .then(() => {
+                        //             props.navigation.navigate('ProjectTabNavigator')
+                        //         })
+                        //         .catch((error) => {
+                        //             alert(error)
+                        //         });
 
-                        }}
+                        // }}
+                        onPress={()=>addPro()}
                     />
                 )
             }
         });
     }, []);
+
+
+    const addPro = async () => {
+
+
+        const docRef = firebase.firestore().collection('Projects').doc();
+
+        const uid = docRef.id;
+        // console.log(uid);
+        const response = await fetch(image);
+        // console.log(JSON.stringify(response));
+        const blob = response.blob();
+        var ref = firebase.storage().ref().child(title);
+        await ref.put("images/" + image);
+        const url = await ref.getDownloadURL().catch((error) => { console.log(error) });
+        console.log(url);
+        // setImageLink(url);
+        const data = {
+            Title: title,
+            Description: description,
+            Guide: guide,
+            Github: github,
+            imgURL: url,
+            Host: host,
+            Contributor: contributor,
+            status: false,
+            rejected: false,
+            TechStack: tech,
+            Domain: domain,
+            batch : user.Batch
+        };
+        console.log(data);
+        const usersRef = firebase.firestore().collection('Projects')
+        usersRef
+            .doc(uid)
+            .set(data)
+            .then(() => {
+                dispatch(setProjects())
+                props.navigation.navigate('ProjectTabNavigator')
+            })
+            .catch((error) => {
+                alert(error)
+            });
+
+    }
 
     const verifyPermissions = async () => {
         const result = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -148,8 +196,19 @@ export default function AddProjectScreen(props) {
 
 
 
-
-
+    const init = (e) => {
+        setImage(null);
+        setTitle('');
+        setDescription('');
+        setGithub('');
+        setGuide('');
+        setHost('');
+        setContributor([]);
+        setLenContributor(0);
+        setTech([]);
+        setLenTech(0);
+        props.navigation.navigate('AddProjectScreen')
+    }
     const handleAddCont = () => {
         let tmp = contributor;
         tmp.push('')
@@ -189,6 +248,7 @@ export default function AddProjectScreen(props) {
                 </View>
                 <View style={styles.input}>
                     <TextInput
+                        value={title}
                         onChangeText={(text) => {
                             setTitle(text);
                         }}
@@ -208,6 +268,7 @@ export default function AddProjectScreen(props) {
                     <TextInput
                         multiline={true}
                         numberOfLines={5}
+                        value={description}
                         onChangeText={(text) => {
                             setDescription(text);
                         }}
@@ -236,7 +297,31 @@ export default function AddProjectScreen(props) {
                 </View>
 
             </View>
+            {/*Domain*/}
+            <View style={styles.container}>
+                <View style={styles.title}>
+                    <Text style={styles.titleContent} >Domain</Text>
+                </View>
+                <Picker
+                    style={styles.input}
+                    value={domain}
+                    selectedValue={domain}
+                    onValueChange={(itemValue) => {
+                        return setDomain(itemValue)
 
+                    }}
+
+                >
+                    <Picker.Item label='All' value='All' />
+                    <Picker.Item label='Web Dev' value='Web Dev' />
+                    <Picker.Item label='App Dev' value='App Dev' />
+                    <Picker.Item label='Blockchain' value='Blockchain' />
+                    <Picker.Item label='AI/ML' value='AI/ML' />
+                    <Picker.Item label='IOT' value='IOT' />
+                    <Picker.Item label='Other' value='Other' />
+
+                </Picker>
+            </View>
             {/* Tech Stack  */}
             <View style={styles.container}>
                 <View style={styles.title}>
@@ -387,6 +472,7 @@ export default function AddProjectScreen(props) {
                 </View>
                 <View style={styles.input}>
                     <TextInput
+                    value={github}
                         onChangeText={(text) => {
                             setGithub(text);
                         }}
@@ -397,12 +483,13 @@ export default function AddProjectScreen(props) {
             </View>
 
             {/* Hosted Link */}
-            <View style={{ ...styles.container, marginBottom: 40 }}>
+            <View style={{ ...styles.container }}>
                 <View style={styles.title}>
                     <Text style={styles.titleContent} >Hosted Link</Text>
                 </View>
                 <View style={styles.input}>
                     <TextInput
+                        value={host}
                         onChangeText={(text) => {
                             setHost(text);
                         }}
@@ -410,6 +497,18 @@ export default function AddProjectScreen(props) {
                     />
                 </View>
 
+            </View>
+            <View style={{ ...styles.container, marginBottom: 40 }}>
+                <TouchableOpacity style={styles.loginBtn}
+                    onPress={()=>init()}
+                >
+                    <Text style={styles.titleContent}>RESET</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  style={styles.loginBtn}
+                    onPress = {()=>addPro()}
+                >
+                    <Text style={styles.titleContent}>ADD</Text>
+                </TouchableOpacity>
             </View>
         </ScrollView>
 
@@ -438,6 +537,16 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'white',
         color: '#888'
+    },
+    loginBtn: {
+        width: "40%",
+        backgroundColor: Colors.primary,
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 40,
+        marginBottom: 10
     },
     buttonContainer: {
         flexDirection: 'row',
