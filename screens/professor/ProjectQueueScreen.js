@@ -6,6 +6,7 @@ import TechItem from '../../components/TechItem'
 import Colors from '../../constants/Colors'
 import { Store } from '../../Redux/store';
 import { useSelector, useDispatch } from 'react-redux';
+import { setUser, setProjects, setQued} from '../../Redux/actions';
 
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,12 +16,73 @@ import { firebase } from '../../firebase/config'
 
 
 export default function ProjectQueueScreen(props) {
-
-    const { projects } = useSelector(state => state.userReducer)
+    
+    const [proj, setProj] = useState([]);
+    
+    const dispatch = useDispatch();
     const { user } = useSelector(state => state.userReducer)
+    const {projectsQued} = useSelector(state=>state.userReducer)
+    var loaded= [];
 
-    const Queuse = projects.filter((item) => item.Guide == user.Name);
-    console.log(Queuse)
+
+    const setProjectList = () =>{
+        firebase.firestore()
+			.collection('Projects')
+			.get()
+			.then(querySnapshot => {
+				querySnapshot.forEach(documentSnapshot => {
+                    
+                    // if(documentSnapshot.Guide === user.Name)
+                    // {
+                        let dt = documentSnapshot.data();
+                        console.log(user.Name);
+                        loaded.push(dt);
+                    // }
+				});
+                setProj(loaded);
+			})
+        
+    }
+
+    useEffect(()=>{
+        setProjectList();
+    },[])
+
+
+
+    const addApprove=(item)=>{
+        const docRef = firebase.firestore().collection('Projects').doc();
+        const uid = docRef.id;
+        firebase.firestore().collection('ApprovedProjects').doc(uid).set({
+            id: uid,
+            Title: item.Title,
+            Description: item.Description,
+            Guide: item.Guide,
+            Github: item.Github,
+            imgURL: item.imgURL,
+            Host: item.Host,
+            Contributor: item.Contributor,
+            status: true,
+            rejected: false,
+            TechStack: item.TechStack,
+            Domain: item.Domain,
+            batch : item.batch
+        }).then(() => {
+            dispatch(setProjects());
+            alert('Project Approved');
+        }).catch((error) => {
+            alert(error.message);
+        });
+        firebase.firestore().collection('Projects').doc(item.id).delete().then(() => {
+            dispatch(setProjects());
+        }).catch((error) => {
+            alert(error.message);
+        })
+        setProjectList();
+    }
+
+    const Queuse = proj.filter((item) => item.Guide === user.Name);
+
 
 
     const list = Queuse.map((item, key) => {
@@ -32,7 +94,7 @@ export default function ProjectQueueScreen(props) {
             >
                 <View style={styles.container}>
                     <View>
-                        <Image style={styles.image} source={item.imgURL} />
+                        <Image style={styles.image} source={{uri : item.imgURL}} />
                     </View>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{item.Title}</Text>
@@ -53,27 +115,7 @@ export default function ProjectQueueScreen(props) {
                                 size={30}
                                 color={Colors.primary}
                                 onPress={() => {
-                                    const fr = firebase.firestore().collection('projects').doc(item.id).get();
-                                    console.log(fr);
-                                    // firebase.firestore().collection('Projects').doc(Queuse.id).set({
-                                    //     Title: item.TSSitle,
-                                    //     Description:item.Description,
-                                    //     Guide: item.Guide,
-                                    //     Github: item.Github,
-                                    //     imgURL: item.imgURL,
-                                    //     Host: item.Host,
-                                    //     Contributor: item.Contributor,
-                                    //     status: false,
-                                    //     rejected: false,
-                                    //     TechStack: item.Techstack,
-                                    //     Domain: item.Domain,
-                                    //     batch: user.batch
-                                    // }, { merge: true }).then(() => {
-                                    //     console.log("success");
-                                    // }).catch(err => {
-                                    //     console.log(err);
-                                    // })
-                                    console.log(Queuse.status);
+                                    addApprove(item);
                                     // props.navigation.navigate('ApprovedProjectList');
                                 }}
                             />
@@ -85,11 +127,12 @@ export default function ProjectQueueScreen(props) {
                                 color={Colors.primary}
                                 // onPress={() => { }}
                                 onPress={() => {
-                                    firebase.firestore().collection('Projects').doc(Queuse.id).update({
-                                        status: false,
-                                        rejected: true
+                                    firebase.firestore().collection('Projects').doc(item.id).delete().then(() => {
+                                        // props.navigation.navigate('ProjectList');
+                                    }).catch((error) => {
+                                        alert(error.message);
                                     });
-                                    console.log(Queuse.status);
+                                    setProjectList();
                                 }}
                             />
                         </View>
@@ -118,48 +161,6 @@ export default function ProjectQueueScreen(props) {
         }
     });
     return (
-        // <TouchableNativeFeedback 
-        //     onPress={()=>{
-        //         props.navigation.navigate('ProjectDetailScreenProfessor');
-        //     }}
-        // >
-        //         <View style={styles.container}>
-        //         <View>
-        //             <Image style={styles.image} source={{uri : 'https://d2slcw3kip6qmk.cloudfront.net/marketing/blog/2017Q2/project-planning-header@2x.png'}}/>
-        //         </View>
-        //         <View style={styles.titleContainer}>
-        //             <Text style={styles.title}>Project Title</Text>
-        //         </View>
-        //         <View style={styles.techContainer}>
-        //             <TechItem tech='react.js' />
-        //             <TechItem tech='node.js' />
-        //             <TechItem tech='HTML' />
-        //             <TechItem tech='Mongodb' />
-        //             <TechItem tech='Javascript' />
-
-        //         </View>
-        //         <View style={styles.buttonContainer}>
-        //             <View style={styles.button}>
-        //                 <AntDesign 
-        //                     name="check" 
-        //                     size={30} 
-        //                     color={Colors.primary} 
-        //                     onPress = {()=>{}}
-        //                 />
-        //             </View>
-        //             <View style={styles.button}>
-        //                 <AntDesign 
-        //                     name="minus" 
-        //                     size={30} 
-        //                     color={Colors.primary} 
-        //                     onPress = {()=>{}}
-        //                 />
-        //             </View>
-
-        //         </View>
-
-        //     </View>
-        // </TouchableNativeFeedback>
         <ScrollView >
             {list}
         </ScrollView>

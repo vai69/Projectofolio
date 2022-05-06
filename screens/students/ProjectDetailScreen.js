@@ -12,9 +12,9 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default function ProjectDetailScreen(props) {
 
-  const { projects } = useSelector(state => state.userReducer);
-  const key = props.route.params.key;
-  const details = projects[key]
+  // const { projects } = useSelector(state => state.userReducer);
+  const {project} = props.route.params;
+  const details = project
   console.log(details);
   const handlePress = useCallback(async (url) => {
     if (url != undefined) {
@@ -45,7 +45,7 @@ export default function ProjectDetailScreen(props) {
             <TechItem tech='Mongodb' />
             <TechItem tech='Javascript' /> */}
             {
-              details.Tech.length > 0 ?
+              details.TechStack.length > 0 ?
               details.TechStack.map(tech => (
                 <TechItem tech={tech} />
               )) : null

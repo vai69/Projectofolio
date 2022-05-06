@@ -6,6 +6,9 @@ import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { firebase } from '../../firebase/config'
+import uuid from 'uuid';
+
+
 
 import {
     Text,
@@ -27,13 +30,13 @@ import Colors from '../../constants/Colors';
 import { add, set } from 'react-native-reanimated';
 import { TouchableHighlight } from 'react-native-web';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUser, setProjects} from '../../Redux/actions';
+import { setUser, setProjects } from '../../Redux/actions';
 
 
 
 
 export default function AddProjectScreen(props) {
-    const {user} = useSelector(state => state.userReducer)
+    const { user } = useSelector(state => state.userReducer)
 
     const [image, setImage] = useState(null);
     const [title, setTitle] = useState('');
@@ -48,7 +51,7 @@ export default function AddProjectScreen(props) {
 
     const [tech, setTech] = useState([]);
     const [lenTech, setLenTech] = useState(0);
-    
+
 
     const dispatch = useDispatch();
 
@@ -116,7 +119,7 @@ export default function AddProjectScreen(props) {
                         //         });
 
                         // }}
-                        onPress={()=>addPro()}
+                        onPress={() => addPro()}
                     />
                 )
             }
@@ -127,44 +130,68 @@ export default function AddProjectScreen(props) {
     const addPro = async () => {
 
 
-        const docRef = firebase.firestore().collection('Projects').doc();
+        console.log(image);
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function (e) {
+                console.log(e);
+                reject(new TypeError('Network request failed'));
+            };
+            xhr.responseType = 'blob';
+            xhr.open('GET', image, true);
+            xhr.send(null);
+        });
+        const ref = firebase
+            .storage()
+            .ref()
+            .child(uuid.v4() + title);
+        const snapshot = await ref.put(blob);
+        // We're done with the blob, close and release it
+        blob.close();
+        const url = await snapshot.ref.getDownloadURL();
+        if (url) {
+            const docRef = firebase.firestore().collection('Projects').doc();
 
-        const uid = docRef.id;
-        // console.log(uid);
-        const response = await fetch(image);
-        // console.log(JSON.stringify(response));
-        const blob = response.blob();
-        var ref = firebase.storage().ref().child(title);
-        await ref.put("images/" + image);
-        const url = await ref.getDownloadURL().catch((error) => { console.log(error) });
-        console.log(url);
-        // setImageLink(url);
-        const data = {
-            Title: title,
-            Description: description,
-            Guide: guide,
-            Github: github,
-            imgURL: url,
-            Host: host,
-            Contributor: contributor,
-            status: false,
-            rejected: false,
-            TechStack: tech,
-            Domain: domain,
-            batch : user.Batch
-        };
-        console.log(data);
-        const usersRef = firebase.firestore().collection('Projects')
-        usersRef
-            .doc(uid)
-            .set(data)
-            .then(() => {
-                dispatch(setProjects())
-                props.navigation.navigate('ProjectTabNavigator')
-            })
-            .catch((error) => {
-                alert(error)
-            });
+            const uid = docRef.id;
+
+            setImageLink(url);
+            const data = {
+                id: uid,
+                Title: title,
+                Description: description,
+                Guide: guide,
+                Github: github,
+                imgURL: url,
+                Host: host,
+                Contributor: contributor,
+                status: false,
+                rejected: false,
+                TechStack: tech,
+                Domain: domain,
+                batch: user.Batch
+            };
+            console.log(data);
+            const usersRef = firebase.firestore().collection('Projects')
+            usersRef
+                .doc(uid)
+                .set(data)
+                .then(() => {
+                    dispatch(setProjects())
+                    props.navigation.navigate('ProjectTabNavigator')
+                })
+                .catch((error) => {
+                    alert(error)
+                });
+        }
+        else{
+            alert("Image is not uploaded");
+        }
+
+
+
 
     }
 
@@ -472,7 +499,7 @@ export default function AddProjectScreen(props) {
                 </View>
                 <View style={styles.input}>
                     <TextInput
-                    value={github}
+                        value={github}
                         onChangeText={(text) => {
                             setGithub(text);
                         }}
@@ -500,12 +527,12 @@ export default function AddProjectScreen(props) {
             </View>
             <View style={{ ...styles.container, marginBottom: 40 }}>
                 <TouchableOpacity style={styles.loginBtn}
-                    onPress={()=>init()}
+                    onPress={() => init()}
                 >
                     <Text style={styles.titleContent}>RESET</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.loginBtn}
-                    onPress = {()=>addPro()}
+                <TouchableOpacity style={styles.loginBtn}
+                    onPress={() => addPro()}
                 >
                     <Text style={styles.titleContent}>ADD</Text>
                 </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React , {useState} from 'react'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 
 import { Feather } from '@expo/vector-icons';
@@ -39,7 +39,7 @@ export default function FilterScreen(props) {
                     onPress={()=>{  
                         //Logic to save filters
                         apply();
-                        // props.navigation.navigate('ProjectTabNavigator');
+                       
                     }}
                 />
             )
@@ -53,44 +53,19 @@ export default function FilterScreen(props) {
     const [domain,setDomain] = useState('');
 
 
-    const apply=()=>{
-        if(batch === '' && guide === '' && domain === ''){
-            dispatch(setProjects())
-            props.navigation.navigate('ProjectTabNavigator');
+    const apply= async()=>{
+        try{
+           await AsyncStorage.setItem('filters',JSON.stringify({
+                batch : batch,
+                yrOfStudy : yrOfStudy,
+                guide : guide,
+                domain : domain,
+            }));
+            
+        }catch(e){
+            console.log(e);
         }
-        else if(batch && guide && domain){
-            const fl = projects.filter(p=>{
-                return p.batch === batch && p.guide === guide && p.domain === domain;
-            })
-            console.log(fl);
-        }
-        else if(batch && guide)
-        {
-            const fl = projects.filter(p=>{
-                return p.batch === batch && p.guide === guide;
-            })
-            console.log(fl);
-        }
-        else if(batch)
-        {
-            const fl = projects.filter(p=>{
-                return p.batch === batch;
-            })
-            console.log(fl);
-        }
-        else if(guide){
-            const fl = projects.filter(p=>{
-                return p.guide === guide;
-            })
-            console.log(fl);
-        }
-        else if(domain){
-            const fl = projects.filter(p=>{
-                return p.Domain === domain;
-            })
-            console.log(fl);
-            dispatch(fil_pro(fl));
-        }
+        props.navigation.navigate('ProjectTabNavigator');
     }
     
     return (
@@ -107,7 +82,7 @@ export default function FilterScreen(props) {
                         
                     }}
                 >
-                    <Picker.Item label='All' value='All'/>
+                    <Picker.Item label='All' value=''/>
                     <Picker.Item label='2019' value='2019'/>
                     <Picker.Item label='2020' value='2020'/>
                     <Picker.Item label='2021' value='2022'/>
@@ -180,7 +155,7 @@ export default function FilterScreen(props) {
                         
                     }}
                 >
-                    <Picker.Item label='All' value='All'/>
+                    <Picker.Item label='All' value=''/>
                     <Picker.Item label='Web Dev' value='Web Dev'/>
                     <Picker.Item label='App Dev' value='App Dev'/>
                     <Picker.Item label='Blockchain' value='Blockchain'/>

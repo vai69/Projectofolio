@@ -9,10 +9,18 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import {firebase} from "../../firebase/config";
+
+
+
 
 export default function ProjectQueueScreen(props) {
     const { user, projects } = useSelector(state => state.userReducer)
+
     const Queuse = projects.filter((item) => item.Guide == user.Name && item.status == true && item.rejected == false);
+
+    const ApprovedPro = firebase.firestore().collection('ApprovedProjects').where('Guide', '==', user.Name).where('status', '==', true).where('rejected', '==', false);
+
 
     const list = Queuse.map((item, key) => {
         return (
@@ -27,7 +35,7 @@ export default function ProjectQueueScreen(props) {
                         <Image style={styles.image} source={{ uri: 'https://d2slcw3kip6qmk.cloudfront.net/marketing/blog/2017Q2/project-planning-header@2x.png' }} />
                     </View>
                     <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Project Title</Text>
+                        <Text style={styles.title}>{item.Title}</Text>
                     </View>
                     <View style={styles.techContainer}>
                         {/* <TechItem tech='react.js' />
