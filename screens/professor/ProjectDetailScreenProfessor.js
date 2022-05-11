@@ -42,71 +42,8 @@ export default function ProjectDetailScreenProfessor(props) {
   return (
     <ScrollView>
       <View>
-        <Image style={styles.image} source={{ uri: 'https://d2slcw3kip6qmk.cloudfront.net/marketing/blog/2017Q2/project-planning-header@2x.png' }} />
+        <Image style={styles.image} source={{ uri: project.imgURL }} />
       </View>
-      {/* 
-          <View style={styles.container}>
-            <View >
-                <View style={styles.techContainer}>
-                  <TechItem tech='react.js' />
-                    <TechItem tech='node.js' />
-                    <TechItem tech='HTML' />
-                    <TechItem tech='Mongodb' />
-                    <TechItem tech='Javascript' />
-                </View>
-            </View>
-            
-              <View style={styles.description}>
-                <Text style={styles.descriptionContent}>
-                  It is important to focus on the unique details of each project that showcases your skills and experience. Mention data related to the project, including details like the dollar value, length, scope, number of team members you managed, and the amount of revenue generated at the end of the project.
-                </Text>
-              </View>
-              
-          
-              <View style={styles.contributorContainer}>
-                <View style={styles.entity}>
-                  <Text style={styles.entityTitle}>
-                    Contributors : 
-                  </Text>
-                  <View style={{marginLeft : 5}}>
-                    <TouchableNativeFeedback onPress={()=>props.navigation.navigate('ProfileCheckByProfessor')}>
-                      <Text style={styles.entityContent}>
-                        1. Pavan Shinde
-                      </Text>
-                    </TouchableNativeFeedback>
-                    
-                    <TouchableNativeFeedback onPress={()=>props.navigation.navigate('ProfileCheckByProfessor')}>
-                      <Text style={styles.entityContent}>
-                        2. Aashish Sutar
-                      </Text>
-                    </TouchableNativeFeedback>
-                    <View style={styles.link}>
-                      <AntDesign 
-                        name="github" 
-                        size={30} 
-                        color="black" 
-                        onPress={handlePress.bind(this,'https://github.com/')}
-                      />
-                    </View>
-                  </View>
-                  
-                </View>
-                <View style={styles.entity}>
-                 
-                  <View style={styles.link}>
-                    <AntDesign 
-                      name="link" 
-                      size={30} 
-                      color="black" 
-                      onPress={handlePress.bind(this,undefined)}
-                    />
-                  </View>
-                </View>
-              </View>
-          
-          
-          </View> */}
-
       <View style={styles.container}>
         <View >
           <View style={styles.techContainer}>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import email from 'react-native-email'
 import { StyleSheet, Text, View, Image, TouchableNativeFeedback, ScrollView } from 'react-native'
 
 import TechItem from '../../components/TechItem'
@@ -7,6 +8,8 @@ import Colors from '../../constants/Colors'
 import { Store } from '../../Redux/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setProjects, setQued} from '../../Redux/actions';
+
+
 
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -23,6 +26,20 @@ export default function ProjectQueueScreen(props) {
     const { user } = useSelector(state => state.userReducer)
     const {projectsQued} = useSelector(state=>state.userReducer)
     var loaded= [];
+
+
+    const handleEmail = (item) => {
+        const to =  item.Contributor;// string or array of email addresses
+
+        email(to, {
+            // Optional additional arguments
+            cc: '', // string or array of email addresses
+            bcc: '', // string or array of email addresses
+            subject: 'Projects Update',
+            body: "hi from me",
+        }).catch(console.error)
+    }
+    
 
 
     const setProjectList = () =>{
@@ -78,7 +95,8 @@ export default function ProjectQueueScreen(props) {
         }).catch((error) => {
             alert(error.message);
         })
-        setProjectList();
+        handleEmail(item);
+        // setProjectList();
     }
 
     const Queuse = proj.filter((item) => item.Guide === user.Name);

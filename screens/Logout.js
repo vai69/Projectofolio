@@ -4,11 +4,6 @@ import {
     Text,
     View,
     StyleSheet,
-    Button,
-    TouchableNativeFeedback,
-    TextInput,
-    ScrollView,
-    Image,
     TouchableOpacity
  } from 'react-native'
 import Colors from '../constants/Colors';

@@ -15,16 +15,16 @@ export default function ProfileScreen(props) {
     const {user} = useSelector(state => state.userReducer);
     console.log(user);
     const { projects } = useSelector(state => state.userReducer)
-    const project = projects.filter(project => project.Contributor.includes(user.Email) && project.status === true);
-
-    const proList = project.map((item, key)=>{return(
+    const project =user.role === "student"? projects.filter(project => project.Contributor.includes(user.Email) && project.status === true)
+                  : projects.filter(project => project.Guide === user.Name);
+    const proList =project.map((item, key)=>{return(
       <TouchableNativeFeedback key={key}
       onPress={()=>{props.navigation.navigate('ProjectDetail',{project:item})}}
-    >
+      >
         <View style={styles.projectContainer}>
           <Image 
               style={styles.projectImage} 
-              source={{uri : 'https://hindi.cdn.zeenews.com/hindi/sites/default/files/2022/02/16/1049974-rohit-sharma.gif'}} 
+              source={{uri : item.imgURL}} 
           />
           <View >
             <Text style={styles.projectTitle} >{item.Title}</Text>
@@ -73,97 +73,179 @@ export default function ProfileScreen(props) {
         )
     }
   });
-  return (
-    <View style={styles.container}>
-        
-      <View style={styles.fst}>
-        {/* Photo and profile linkedin, github */}
-        <Image 
-            style={styles.image} 
-            source={{uri : 'https://hindi.cdn.zeenews.com/hindi/sites/default/files/2022/02/16/1049974-rohit-sharma.gif'}} 
-        />
-          <View style={styles.links}>
-              <View style={{...styles.iconContainer , marginLeft : 40}}>
-                <AntDesign 
-                  name="github" 
-                  size={40} 
-                  color="white" 
-                  onPress={handlePress.bind(this,'https://github.com/')}
-                />
-              </View>
-              <View style={styles.iconContainer}>
-                <Entypo 
-                  name="linkedin" 
-                  size={40} 
-                  color="white" 
-                  onPress={handlePress.bind(this,'https://www.linkedin.com/feed/')}
-                />
-              </View>
-                
-          </View>
-      </View>
-
-
-
-      <View style={styles.snd}>
-        {/* Name Batch */}
-        <View style={styles.nameContainer}>
-          <Text style={styles.name} >{user.Fname}</Text> 
-          <Text style={styles.surName}>{user.Lname}</Text> 
-        </View>
-        <Text style={styles.surName}>{user.Batch}</Text>
-      </View>
-
-
-      <View style={styles.thr}>
-        {/* Email and mobile no */}
-          <View style={{marginVertical : 10}}>
-            <Text style={styles.contact}>Contact</Text>  
-          </View>
-          <View style={{flexDirection : 'row' , justifyContent : 'space-evenly',alignItems : 'center',marginBottom : 20}}>
-            <MaterialIcons 
-              name="email" 
-              size={40} 
-              color={Colors.accent} 
-              onPress={handlePress.bind(this,`mailto:${user.Email}`)}
-            />
-            <Entypo 
-              name="mobile" 
-              size={40} color={Colors.accent} 
-              onPress= {handlePress.bind(this,'tel:+917841990407')}
-            />
-          </View>
-      </View>
-
-      <View style={styles.forth}>
-        {/* Projects List */}
-        <Text style={styles.contact}>Projects</Text>  
-        <ScrollView 
-          style={{flexDirection : 'row'}}
-          horizontal={true}
-        >
-          {/* <TouchableNativeFeedback 
-            onPress={()=>{props.navigation.navigate('ProjectDetail')}}
-          >
-              <View style={styles.projectContainer}>
-                <Image 
-                    style={styles.projectImage} 
-                    source={{uri : 'https://hindi.cdn.zeenews.com/hindi/sites/default/files/2022/02/16/1049974-rohit-sharma.gif'}} 
-                />
-                <View >
-                  <Text style={styles.projectTitle} >Project 1</Text>
+  if(user.role==='teacher')
+  {
+    return (
+      <View style={styles.container}>
+          
+        <View style={styles.fst}>
+          {/* Photo and profile linkedin, github */}
+          <Image 
+              style={styles.image} 
+              source={{uri : user.imgURL}}
+          />
+            <View style={styles.links}>
+                <View style={{...styles.iconContainer , marginLeft : 40}}>
+                  <AntDesign 
+                    name="github" 
+                    size={40} 
+                    color="white" 
+                    onPress={handlePress.bind(this,'https://github.com/')}
+                  />
                 </View>
-              </View>
-          </TouchableNativeFeedback> */}
+                <View style={styles.iconContainer}>
+                  <Entypo 
+                    name="linkedin" 
+                    size={40} 
+                    color="white" 
+                    onPress={handlePress.bind(this,'https://www.linkedin.com/feed/')}
+                  />
+                </View>
+                  
+            </View>
+        </View>
+  
+  
+  
+        <View style={styles.snd}>
+          {/* Name Batch */}
+          <View style={styles.nameContainer}>
+            <Text style={styles.name} >{user.Name}</Text> 
+          </View>
+        </View>
+  
+  
+        <View style={styles.thr}>
+          {/* Email and mobile no */}
+            <View style={{marginVertical : 10}}>
+              <Text style={styles.contact}>Contact</Text>  
+            </View>
+            <View style={{flexDirection : 'row' , justifyContent : 'space-evenly',alignItems : 'center',marginBottom : 20}}>
+              <MaterialIcons 
+                name="email" 
+                size={40} 
+                color={Colors.accent} 
+                onPress={handlePress.bind(this,`mailto:${user.Email}`)}
+              />
+              <Entypo 
+                name="mobile" 
+                size={40} color={Colors.accent} 
+                onPress= {handlePress.bind(this,'tel:+917841990407')}
+              />
+            </View>
+        </View>
+  
+        <View style={styles.forth}>
+          {/* Projects List */}
+          <Text style={styles.contact}>Projects Guided</Text>  
+          <ScrollView 
+            style={{flexDirection : 'row'}}
+            horizontal={true}
+          >
           {
             proList
           }
-          
             
-        </ScrollView>
+              
+          </ScrollView>
+        </View>
       </View>
-    </View>
-  )
+    )
+  }
+  else{
+    return (
+      <View style={styles.container}>
+          
+        <View style={styles.fst}>
+          {/* Photo and profile linkedin, github */}
+          <Image 
+              style={styles.image} 
+              source={{uri : user.imgURL}}
+          />
+            <View style={styles.links}>
+                <View style={{...styles.iconContainer , marginLeft : 40}}>
+                  <AntDesign 
+                    name="github" 
+                    size={40} 
+                    color="white" 
+                    onPress={handlePress.bind(this,'https://github.com/')}
+                  />
+                </View>
+                <View style={styles.iconContainer}>
+                  <Entypo 
+                    name="linkedin" 
+                    size={40} 
+                    color="white" 
+                    onPress={handlePress.bind(this,'https://www.linkedin.com/feed/')}
+                  />
+                </View>
+                  
+            </View>
+        </View>
+  
+  
+  
+        <View style={styles.snd}>
+          {/* Name Batch */}
+          <View style={styles.nameContainer}>
+            <Text style={styles.name} >{user.Fname}</Text> 
+            <Text style={styles.surName}>{user.Lname}</Text> 
+          </View>
+          <Text style={styles.surName}>{user.Batch}</Text>
+        </View>
+  
+  
+        <View style={styles.thr}>
+          {/* Email and mobile no */}
+            <View style={{marginVertical : 10}}>
+              <Text style={styles.contact}>Contact</Text>  
+            </View>
+            <View style={{flexDirection : 'row' , justifyContent : 'space-evenly',alignItems : 'center',marginBottom : 20}}>
+              <MaterialIcons 
+                name="email" 
+                size={40} 
+                color={Colors.accent} 
+                onPress={handlePress.bind(this,`mailto:${user.Email}`)}
+              />
+              <Entypo 
+                name="mobile" 
+                size={40} color={Colors.accent} 
+                onPress= {handlePress.bind(this,'tel:+917841990407')}
+              />
+            </View>
+        </View>
+  
+        <View style={styles.forth}>
+          {/* Projects List */}
+          <Text style={styles.contact}>Projects</Text>  
+          <ScrollView 
+            style={{flexDirection : 'row'}}
+            horizontal={true}
+          >
+            {/* <TouchableNativeFeedback 
+              onPress={()=>{props.navigation.navigate('ProjectDetail')}}
+            >
+                <View style={styles.projectContainer}>
+                  <Image 
+                      style={styles.projectImage} 
+                      source={{uri : 'https://hindi.cdn.zeenews.com/hindi/sites/default/files/2022/02/16/1049974-rohit-sharma.gif'}} 
+                  />
+                  <View >
+                    <Text style={styles.projectTitle} >Project 1</Text>
+                  </View>
+                </View>
+            </TouchableNativeFeedback> */}
+            {
+              proList
+            }
+            
+              
+          </ScrollView>
+        </View>
+      </View>
+    )
+  }
+  
 }
 
 const styles = StyleSheet.create({

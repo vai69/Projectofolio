@@ -78,47 +78,6 @@ export default function AddProjectScreen(props) {
                         size={24}
                         style={{ marginRight: 10 }}
                         color="white"
-                        // onPress={async () => {
-
-
-                        //     const docRef = firebase.firestore().collection('Projects').doc();
-
-                        //     const uid = docRef.id;
-                        //     // console.log(uid);
-                        //     const response = await fetch(image);
-                        //     // console.log(JSON.stringify(response));
-                        //     const blob = response.blob();
-                        //     var ref = firebase.storage().ref().child(title);
-                        //     await ref.put("images/" + image);
-                        //     const url = await ref.getDownloadURL().catch((error) => { console.log(error) });
-                        //     console.log(url);
-                        //     // setImageLink(url);
-                        //     const data = {
-                        //         Title: title,
-                        //         Description: description,
-                        //         Guide: guide,
-                        //         Github: github,
-                        //         imgURL: url,
-                        //         Host: host,
-                        //         Contributor: contributor,
-                        //         status: false,
-                        //         rejected: false,
-                        //         TechStack: tech,
-                        //         Domain: domain
-                        //     };
-                        //     console.log(data);
-                        //     const usersRef = firebase.firestore().collection('Projects')
-                        //     usersRef
-                        //         .doc(uid)
-                        //         .set(data)
-                        //         .then(() => {
-                        //             props.navigation.navigate('ProjectTabNavigator')
-                        //         })
-                        //         .catch((error) => {
-                        //             alert(error)
-                        //         });
-
-                        // }}
                         onPress={() => addPro()}
                     />
                 )

@@ -32,17 +32,12 @@ export default function ProjectQueueScreen(props) {
             >
                 <View style={styles.container}>
                     <View>
-                        <Image style={styles.image} source={{ uri: 'https://d2slcw3kip6qmk.cloudfront.net/marketing/blog/2017Q2/project-planning-header@2x.png' }} />
+                        <Image style={styles.image} source={{ uri: item.imgURL }} />
                     </View>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{item.Title}</Text>
                     </View>
                     <View style={styles.techContainer}>
-                        {/* <TechItem tech='react.js' />
-                        <TechItem tech='node.js' />
-                        <TechItem tech='HTML' />
-                        <TechItem tech='Mongodb' />
-                        <TechItem tech='Javascript' /> */}
                         {
                             item.TechStack.map(tech => {
                                 // console.log(tech);
@@ -82,39 +77,6 @@ export default function ProjectQueueScreen(props) {
         }
     });
     return (
-        // <TouchableNativeFeedback 
-        //     onPress={()=>{
-        //         props.navigation.navigate('ProjectDetail');
-        //     }}
-        // >
-        //         <View style={styles.container}>
-        //         <View>
-        //             <Image style={styles.image} source={{uri : 'https://d2slcw3kip6qmk.cloudfront.net/marketing/blog/2017Q2/project-planning-header@2x.png'}}/>
-        //         </View>
-        //         <View style={styles.titleContainer}>
-        //             <Text style={styles.title}>Project Title</Text>
-        //         </View>
-        //         <View style={styles.techContainer}>
-        //             <TechItem tech='react.js' />
-        //             <TechItem tech='node.js' />
-        //             <TechItem tech='HTML' />
-        //             <TechItem tech='Mongodb' />
-        //             <TechItem tech='Javascript' />
-
-        //         </View>
-        //         <View style={styles.buttonContainer}>
-        //             <View style={styles.button}>
-        //                 <Entypo 
-        //                     name="eye" 
-        //                     size={30} 
-        //                     color={Colors.primary} 
-        //                     onPress={()=>{props.navigation.navigate('ProjectDetail')}}
-        //                 />    
-        //             </View>
-        //         </View>
-
-        //     </View>
-        // </TouchableNativeFeedback>
         <ScrollView>
             {list.length === 0 ? <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}>No Project</Text>

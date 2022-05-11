@@ -19,59 +19,72 @@ import { useSelector, useDispatch } from 'react-redux';
 
 
 
-export default function ProjectListScreen(props,params) {
+export default function ProjectListScreen(props) {
 
 
     
     const[pr , setPr] = useState([]);
     const [proj, setProj] = useState([]);
-    var loadedProducts = [];
-    const setProjectList = async(loded) => {
+
+    const dispatch = useDispatch();
+    const {projects} = useSelector(state => state.userReducer);
+
+    const inintilize=()=>{
+            setPr(projects);
+            setProj(projects);         
+            setProjectList();
+    }
+
+
+
+
+    const setProjectList = async() => {
+        console.log(proj);
         var batch="", guide="", domain="";
         var value = await AsyncStorage.getItem('filters');
         value = JSON.parse(value);
         batch = value['batch'];
         guide = value['guide'];
         domain = value['domain'];
-        console.log(batch,guide,domain);
-        if (batch === undefined && guide === undefined && domain === undefined) {
-            setPr(loded)
-            console.log(loded);
+        // console.log(batch,guide,domain);
+        if (batch === "" && guide === "" && domain === "") {
+            setPr(projects)
+            // console.log(projects);
         }
         else if (batch!="" && guide!="" && domain!="") {
-            const fl = loded.filter(p => {
+            const fl = projects.filter(p => {
                 return p.batch === batch && p.Guide === guide && p.Domain === domain;
             })
             setPr(fl)
-            console.log(fl);
+            // console.log(fl);
         }
         else if (batch && guide) {
-            const fl = loded.filter(p => {
+            const fl = projects.filter(p => {
                 return p.batch === batch && p.Guide === guide;
             })
             setPr(fl)
-            console.log(fl);
+            // console.log(fl);
         }
         else if (batch && guide === '' && domain === "") {
-            const fl = loded.filter(p => {
+            const fl = projects.filter(p => {
                 return p.batch === batch;
             })
             setPr(fl)
-            console.log(fl);
+            // console.log(fl);
         }
         else if (batch === "" && guide && domain === "") {
-            const fl = loded.filter(p => {
-                return p.guide === guide;
+            const fl = projects.filter(p => {
+                return p.Guide === guide;
             })
             setPr(fl)
-            console.log(fl);
+            // console.log(fl);
         }
         else if (batch === "" && guide === "" && domain) {
-            const fl = loded.filter(p => {
+            const fl = projects.filter(p => {
                 return p.Domain === domain;
             })
             setPr(fl)
-            console.log(fl);
+            // console.log(fl);
         }
     }
 
@@ -145,27 +158,15 @@ export default function ProjectListScreen(props,params) {
                         style={{ marginRight: 10 }}
                         color="white" 
                         onPress={() => {
-                            setProjectList(pr);
-                            console.log("Refreshed project==================================0");
+                            setProjectList(proj);
                             alert("Refreshed");
-                            // props.navigation.navigate('ProjectList');
                         }}
                     />
                 )
             }
         });
-        const response = firebase.firestore()
-            .collection('ApprovedProjects')
-            .get()
-            .then(querySnapshot => {
-                querySnapshot.forEach(documentSnapshot => {
-                    let dt = documentSnapshot.data();
-                    loadedProducts.push(dt);
-                    
-                });   
-                setPr(loadedProducts);         
-                setProjectList(loadedProducts);
-            })
+        inintilize();
+        console.log(pr);
     }, []);
     return (
 

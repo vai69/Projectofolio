@@ -6,13 +6,11 @@ import { useSelector } from 'react-redux';
 
 
 import Colors from '../../constants/Colors'
-import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 export default function ProjectDetailScreen(props) {
 
-  // const { projects } = useSelector(state => state.userReducer);
   const {project} = props.route.params;
   const details = project
   console.log(details);
@@ -33,17 +31,12 @@ export default function ProjectDetailScreen(props) {
   return (
     <ScrollView>
       <View>
-        <Image style={styles.image} source={{ uri: 'https://d2slcw3kip6qmk.cloudfront.net/marketing/blog/2017Q2/project-planning-header@2x.png' }} />
+        <Image style={styles.image} source={{ uri: details.imgURL }} />
       </View>
 
       <View style={styles.container}>
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.techContainer}>
-            {/* <TechItem tech='react.js' />
-            <TechItem tech='node.js' />
-            <TechItem tech='HTML' />
-            <TechItem tech='Mongodb' />
-            <TechItem tech='Javascript' /> */}
             {
               details.TechStack.length > 0 ?
               details.TechStack.map(tech => (
@@ -89,23 +82,12 @@ export default function ProjectDetailScreen(props) {
                   )
                 })
               }
-              {/* <TouchableNativeFeedback onPress={() => props.navigation.navigate('ContributorProfile')}>
-                <Text style={styles.entityContent}>
-                  1. Pavan Shinde
-                </Text>
-              </TouchableNativeFeedback>
-
-              <TouchableNativeFeedback onPress={() => props.navigation.navigate('ContributorProfile')}>
-                <Text style={styles.entityContent}>
-                  2. Aashish Sutar
-                </Text>
-              </TouchableNativeFeedback> */}
               <View style={styles.link}>
                 <AntDesign
                   name="github"
                   size={30}
                   color="black"
-                  onPress={handlePress.bind(this, 'https://github.com/')}
+                  onPress={handlePress.bind(this, 'https://github.com/'+details.Github)}
                 />
               </View>
             </View>

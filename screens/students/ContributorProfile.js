@@ -39,7 +39,7 @@ export default function ContributorProfile(props) {
     <View style={styles.projectContainer}>
     <Image
       style={styles.projectImage}
-      source={{ uri: 'https://hindi.cdn.zeenews.com/hindi/sites/default/files/2022/02/16/1049974-rohit-sharma.gif' }}
+      source={{ uri: item.imgURL}}
     />
     <View >
       <Text style={styles.projectTitle} >{item.Title}</Text>
@@ -97,45 +97,9 @@ export default function ContributorProfile(props) {
           style={{ flexDirection: 'row' }}
           horizontal={true}
         >
-          {
+        {
             list
-          }
-          {/* <View style={styles.projectContainer}>
-            <Image
-              style={styles.projectImage}
-              source={{ uri: 'https://hindi.cdn.zeenews.com/hindi/sites/default/files/2022/02/16/1049974-rohit-sharma.gif' }}
-            />
-            <View >
-              <Text style={styles.projectTitle} >Project 1</Text>
-            </View>
-          </View>
-          <View style={styles.projectContainer}>
-            <Image
-              style={styles.projectImage}
-              source={{ uri: 'https://hindi.cdn.zeenews.com/hindi/sites/default/files/2022/02/16/1049974-rohit-sharma.gif' }}
-            />
-            <View >
-              <Text style={styles.projectTitle} >Project 1</Text>
-            </View>
-          </View>
-          <View style={styles.projectContainer}>
-            <Image
-              style={styles.projectImage}
-              source={{ uri: 'https://hindi.cdn.zeenews.com/hindi/sites/default/files/2022/02/16/1049974-rohit-sharma.gif' }}
-            />
-            <View >
-              <Text style={styles.projectTitle} >Project 1</Text>
-            </View>
-          </View>
-          <View style={styles.projectContainer}>
-            <Image
-              style={styles.projectImage}
-              source={{ uri: 'https://hindi.cdn.zeenews.com/hindi/sites/default/files/2022/02/16/1049974-rohit-sharma.gif' }}
-            />
-            <View >
-              <Text style={styles.projectTitle} >Project 1</Text>
-            </View>
-          </View> */}
+        }
 
         </ScrollView>
       </View>
