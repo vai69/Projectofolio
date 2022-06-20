@@ -15,6 +15,13 @@ export default function Login(props) {
 
   useEffect(() => {
     dispatch(setProjects());
+    
+   /* if user is already logged in then -> if(us.role=="student"){
+                    props.navigation.navigate('DrawerNavigator')
+                 }
+                else{
+                    props.navigation.navigate('ProDrawerNavigator')
+                }*/
   }, []);
 
   const onPressLogin = () => {
