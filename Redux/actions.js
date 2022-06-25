@@ -1,3 +1,5 @@
+// inporting Firebse
+
 import { firebase } from '../firebase/config'
 import {useSelector} from 'react-redux'
 
